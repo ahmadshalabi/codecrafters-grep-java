@@ -21,6 +21,9 @@ public class Main {
     public static boolean matchPattern(String inputLine, String pattern) {
         if (pattern.length() == 1) {
             return inputLine.contains(pattern);
+        } else if ("\\d".equals(pattern)) {
+            return inputLine.codePoints()
+                    .anyMatch(Character::isDigit);
         } else {
             throw new RuntimeException("Unhandled pattern: " + pattern);
         }
