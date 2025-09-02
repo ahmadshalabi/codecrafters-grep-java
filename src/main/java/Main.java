@@ -23,12 +23,17 @@ public class Main {
             return inputLine.contains(pattern);
         } else if ("\\d".equals(pattern)) {
             return inputLine.codePoints()
-                    .anyMatch(Character::isDigit);
+                    .anyMatch(ch -> isLatin(ch) && Character.isDigit(ch));
         } else if ("\\w".equals(pattern)) {
             return inputLine.codePoints()
-                    .anyMatch(ch -> Character.isLetterOrDigit(ch) || ch == '_');
+                    .anyMatch(ch -> isLatin(ch) && (Character.isLetterOrDigit(ch) || ch == '_'));
         } else {
             throw new RuntimeException("Unhandled pattern: " + pattern);
         }
     }
+
+    private static boolean isLatin(int ch) {
+        return Character.UnicodeBlock.of(ch) == Character.UnicodeBlock.BASIC_LATIN;
+    }
+
 }
