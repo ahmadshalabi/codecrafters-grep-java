@@ -24,6 +24,9 @@ public class Main {
         } else if ("\\d".equals(pattern)) {
             return inputLine.codePoints()
                     .anyMatch(Character::isDigit);
+        } else if ("\\w".equals(pattern)) {
+            return inputLine.codePoints()
+                    .anyMatch(ch -> Character.isLetterOrDigit(ch) || ch == '_');
         } else {
             throw new RuntimeException("Unhandled pattern: " + pattern);
         }
