@@ -30,13 +30,24 @@ public class Main {
             return inputLine.codePoints()
                     .anyMatch(ch -> isLatin(ch) && (Character.isLetterOrDigit(ch) || ch == '_'));
         } else if (pattern.startsWith("[") && pattern.endsWith("]")) {
-            Set<Integer> allowedCharacters = pattern.substring(1, pattern.length() - 1)
+            boolean isPositiveCharacterGroup = pattern.charAt(1) != '^';
+            int startIndex = isPositiveCharacterGroup ? 1 : 2;
+            int endIndex = pattern.length() - 1;
+            if (startIndex >= endIndex) {
+                throw new RuntimeException("Empty character group in pattern: " + pattern);
+            }
+            Set<Integer> characterGroup = pattern.substring(startIndex, endIndex)
                     .codePoints()
                     .boxed()
                     .collect(Collectors.toUnmodifiableSet());
 
-            return inputLine.codePoints()
-                    .anyMatch(allowedCharacters::contains);
+            if (isPositiveCharacterGroup) {
+                return inputLine.codePoints()
+                        .anyMatch(characterGroup::contains);
+            } else {
+                return inputLine.codePoints()
+                        .anyMatch(ch -> !characterGroup.contains(ch));
+            }
         } else {
             throw new RuntimeException("Unhandled pattern: " + pattern);
         }
