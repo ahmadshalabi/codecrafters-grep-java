@@ -1,4 +1,6 @@
 import java.util.Scanner;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class Main {
     public static void main(String[] args) {
@@ -27,6 +29,14 @@ public class Main {
         } else if ("\\w".equals(pattern)) {
             return inputLine.codePoints()
                     .anyMatch(ch -> isLatin(ch) && (Character.isLetterOrDigit(ch) || ch == '_'));
+        } else if (pattern.startsWith("[") && pattern.endsWith("]")) {
+            Set<Integer> allowedCharacters = pattern.substring(1, pattern.length() - 1)
+                    .codePoints()
+                    .boxed()
+                    .collect(Collectors.toUnmodifiableSet());
+
+            return inputLine.codePoints()
+                    .anyMatch(allowedCharacters::contains);
         } else {
             throw new RuntimeException("Unhandled pattern: " + pattern);
         }
