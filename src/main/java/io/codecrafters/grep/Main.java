@@ -13,14 +13,15 @@ public class Main {
         }
 
         String pattern = args[1];
-        Scanner scanner = new Scanner(System.in);
-        String inputLine = scanner.nextLine();
-
-        if (matchPattern(inputLine, pattern)) {
-            System.exit(0);
-        } else {
-            System.exit(1);
+        try (Scanner scanner = new Scanner(System.in)) {
+            String inputLine = scanner.nextLine();
+            if (matchPattern(inputLine, pattern)) {
+                System.exit(0);
+            } else {
+                System.exit(1);
+            }
         }
+
     }
 
     public static boolean matchPattern(String inputLine, String pattern) {
